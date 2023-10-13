@@ -604,11 +604,11 @@ export default function Calendar() {
                   .map((e, index) => (
                     <li
                       key={index}
-                      className={`relative mt-px flex sm:col-start-${
+                      className={`relative mt-px flex md:col-start-${(
                         dates.findIndex(
                           (d) => d.fullDate === getDate(e.start)
                         ) + 1
-                      }`}
+                      ).toString()}`}
                       style={{
                         gridRow: `${timeToRow(e.start, e.end).row} / span ${
                           timeToRow(e.start, e.end).span
