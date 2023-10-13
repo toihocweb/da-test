@@ -601,49 +601,67 @@ export default function Calendar() {
                   .filter((val) =>
                     dates.some((e) => e.fullDate === getDate(val.start))
                   )
-                  .map((e, index) => (
-                    <li
-                      key={index}
-                      className={`relative mt-px flex md:col-start-${(
-                        dates.findIndex(
-                          (d) => d.fullDate === getDate(e.start)
-                        ) + 1
-                      ).toString()}`}
-                      style={{
-                        gridRow: `${timeToRow(e.start, e.end).row} / span ${
-                          timeToRow(e.start, e.end).span
-                        }`,
-                      }}
-                    >
-                      <a
-                        className={classNames(
-                          "group absolute inset-1 flex flex-col overflow-y-auto rounded-lg  p-2 text-xs leading-5 ",
-                          e.done
-                            ? "bg-green-100 hover:bg-green-200"
-                            : "bg-blue-100 hover:bg-blue-200"
-                        )}
+                  .map((e, index) => {
+                    const idx =
+                      dates.findIndex(
+                        (val) => val.fullDate === getDate(e.start)
+                      ) + 1;
+                    const colStart =
+                      idx === 1
+                        ? `sm:col-start-1`
+                        : idx === 2
+                        ? `sm:col-start-2`
+                        : idx === 3
+                        ? `sm:col-start-3`
+                        : idx === 4
+                        ? `sm:col-start-4`
+                        : idx === 5
+                        ? `sm:col-start-5`
+                        : idx === 6
+                        ? `sm:col-start-6`
+                        : `sm:col-start-7`;
+                    return (
+                      <li
+                        key={e.id}
+                        className={classNames(`relative mt-px flex`, colStart)}
+                        style={{
+                          gridRow: `${timeToRow(e.start, e.end).row} / span ${
+                            timeToRow(e.start, e.end).span
+                          }`,
+                        }}
                       >
-                        <p className="text-blue-500 group-hover:text-blue-700">
-                          <time dateTime={e.start}>{getTime(e.start)}</time>
-                        </p>
-                        <p className="font-semibold text-blue-700">{e.event}</p>
-                        <div className="flex justify-between items-center mt-auto">
-                          <Toggle
-                            enabled={e.done}
-                            setEnabled={(val) => {
-                              setDone(e.id, val);
-                            }}
-                          />
-                          <TrashIcon
-                            onClick={() => {
-                              handleDelete(e.id);
-                            }}
-                            className="order-2 w-4 h-4 text-blue-500 group-hover:text-blue-700"
-                          />
-                        </div>
-                      </a>
-                    </li>
-                  ))}
+                        <a
+                          className={classNames(
+                            "group absolute inset-1 flex flex-col overflow-y-auto rounded-lg  p-2 text-xs leading-5 ",
+                            e.done
+                              ? "bg-green-100 hover:bg-green-200"
+                              : "bg-blue-100 hover:bg-blue-200"
+                          )}
+                        >
+                          <p className="text-blue-500 group-hover:text-blue-700">
+                            <time dateTime={e.start}>{getTime(e.start)}</time>
+                          </p>
+                          <p className="font-semibold text-blue-700">
+                            {e.event}
+                          </p>
+                          <div className="flex justify-between items-center mt-auto">
+                            <Toggle
+                              enabled={e.done}
+                              setEnabled={(val) => {
+                                setDone(e.id, val);
+                              }}
+                            />
+                            <TrashIcon
+                              onClick={() => {
+                                handleDelete(e.id);
+                              }}
+                              className="order-2 w-4 h-4 text-blue-500 group-hover:text-blue-700"
+                            />
+                          </div>
+                        </a>
+                      </li>
+                    );
+                  })}
               </ol>
             </div>
           </div>
